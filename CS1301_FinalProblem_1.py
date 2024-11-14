@@ -60,7 +60,7 @@ class Nation:
 #Add your code here!
 
 def to_dictionaries(instances_list):
-    dict_nation = {for nation in instances_list}
+    dict_nation = {}
 
     for nation in instances_list:
         dict = {}
