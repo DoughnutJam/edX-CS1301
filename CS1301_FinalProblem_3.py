@@ -80,7 +80,10 @@ def next_move(card_hand):
             ace_count += 1
 
     while ace_count > 0:
-        if 11 + card_hand_value <= 17:
+        if ace_count == 1 and 11 + card_hand_value == 21:
+            ace_count -= 1
+            card_hand_value += 11
+        elif 11 + card_hand_value <= 17:
             ace_count -= 1
             card_hand_value += 11
         else:
@@ -94,13 +97,14 @@ def next_move(card_hand):
     else:
         return "Hit"
 
-    card_hand_value = 0
 #Below are some lines of code that will test your function.
 #You can change the value of the variable(s) to test your
 #function with different inputs.
 #
 # If your function works correctly, this will originally
 # print: Hit, Hit, Stay, and Bust.
+
+print(next_move("AJ"))
 print(next_move("A3"))
 print(next_move("A39"))
 print(next_move("A397"))

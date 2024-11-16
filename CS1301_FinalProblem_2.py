@@ -73,11 +73,3 @@ def generate_name(filename, person_name):
 print(generate_name("heronames.txt", "Addison Zook"))
 print(generate_name("heronames.txt", "Uma Irwin"))
 print(generate_name("heronames.txt", "David Joyner"))
-
-
-print(chr("A"))
-
-
-
-
-ord(A) --> 65
