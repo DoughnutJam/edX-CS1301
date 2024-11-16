@@ -60,17 +60,16 @@ class Nation:
 #Add your code here!
 
 def to_dictionaries(instances_list):
-    dict_nation = {}
-
-    for nation in instances_list:
-        dict = {}
-        dict["long name"] = nation.long_name
-        dict["iso_code"] = nation.iso_code
-        dict["iso_short"] = nation.iso_short
-        dict["iso_long"] = nation.iso_long
-        dict["capital"] = nation.capital
-        dict_nation[nation.short_name] = dict
-
+    dict_nation = {
+        nation.short_name: {
+            "long_name": nation.long_name,
+            "iso_code": nation.iso_code,
+            "iso_short": nation.iso_short,
+            "iso_long": nation.iso_long,
+            "capital": nation.capital,
+        }
+        for nation in instances_list
+    }
     return dict_nation
 
 #Below are some lines of code that will test your function.
