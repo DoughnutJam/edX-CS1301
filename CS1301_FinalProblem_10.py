@@ -119,22 +119,102 @@ CIPHER = (("D", "A", "V", "I", "O"),
 
 def encrypt(string):
 
-    def same_row(pair):
+    # Attempt 2
+    def find_row_column(letter): # Column starts at 0. Use this to find the row and column for each letter in a pair
+        for row in range(0, len(CIPHER)):
+            if letter in CIPHER[row]:
+                return True, row, CIPHER[row].index(letter)
 
-    lower_string = string.upper()
-    replace_j = lower_string.replace('J', 'I')
+    def same_row(input_pair): # Check to see if the letters in input pair are in the same row
+        pair_one_row = find_row_column(input_pair[0])[1]
+        pair_two_row = find_row_column(input_pair[1])[1]
+
+        if pair_one_row == pair_two_row:
+            # print("Row")
+            return True
+        else:
+            return False
+
+    def same_column(input_pair): # Check to see if the letters in the input pair are in the same column
+        pair_one_column = find_row_column(input_pair[0])[2]
+        pair_two_column = find_row_column(input_pair[1])[2]
+
+        if pair_one_column == pair_two_column:
+            # print("Column")
+            return True
+        else:
+            return False
+
+    def same_letter(input_pair): # Check to see if the letters in the input pair are the same.
+        if input_pair[0] == input_pair[1]:
+            # print("Same letter")
+            return True
+        else:
+            return False
+
+    def rectangle_case(input_pair): # Check to see if it's a rectangle case
+        if not same_row(input_pair) and not same_column(input_pair):
+            # print("Rectangle Case")
+            return True
+        else:
+            return False
+
+    # Initial Transformations for base case letter
+
+    upper_string = string.upper()
+    replace_j = upper_string.replace('J', 'I')
     non_letter_removal = [letter for letter in replace_j if 65 <= ord(letter) <= 90]
     if len(non_letter_removal) % 2 == 0:
         pass
     else:
         non_letter_removal.append('X')
 
+    # Change the base case into pairs
+
     character_pairs = []
     for index in range(0, len(non_letter_removal), 2):
         index_2 = index + 1
         pair = str(non_letter_removal[index]) + str(non_letter_removal[index_2])
         character_pairs.append(pair)
-    return character_pairs
+
+
+    # Checking each case and applying transformations
+
+    encrypted = ''
+    for pair in character_pairs:
+        new_test_pair = pair
+        same_letter_test = same_letter(pair)
+        if same_letter_test:
+            new_test_pair = f'{pair[0]}X'
+
+        same_row_test = same_row(new_test_pair)
+        same_column_test = same_column(new_test_pair)
+        rectangle_case_test = rectangle_case(new_test_pair)
+
+
+        if same_row_test:
+            for letter in new_test_pair:
+                letter_bool, letter_row, letter_column = find_row_column(letter)
+                if letter_column+1 > len(CIPHER[letter_row])-1:
+                    encrypted += f'{CIPHER[letter_row][0]}'
+                else:
+                    encrypted += f'{CIPHER[letter_row][letter_column+1]}'
+        elif same_column_test:
+            for letter in new_test_pair:
+                letter_bool, letter_row, letter_column = find_row_column(letter)
+                if letter_row+1 > len(CIPHER)-1:
+                    encrypted += f'{CIPHER[0][letter_column]}'
+                else:
+                    encrypted += f'{CIPHER[letter_row+1][letter_column]}'
+        elif rectangle_case_test:
+            letter_one_bool, letter_one_row, letter_one_column = find_row_column(new_test_pair[0])
+            letter_two_bool, letter_two_row, letter_two_column = find_row_column(new_test_pair[1])
+            encrypted += f'{CIPHER[letter_one_row][letter_two_column]}{CIPHER[letter_two_row][letter_one_column]}'
+        else:
+            print(f'Error with {new_test_pair}')
+
+    return encrypted
+
 
 #Below are some lines of code that will test your function.
 #You can change the value of the variable(s) to test your
@@ -142,9 +222,15 @@ def encrypt(string):
 #
 #If your function works correctly, this will originally
 #print: QLGRQTVZIBTYQZ, then PSHELXOWORLDSX
-print(encrypt("PS. Hello, world"))
+# print(encrypt("PS. Hello, world"))
+# print(decrypt("QLGRQTVZIBTYQZ"))
+#
+#Below are some lines of code that will test your function.
+#You can change the value of the variable(s) to test your
+#function with different inputs.
+#
+#If your function works correctly, this will originally
+#print: QLGRQTVZIBTYQZ, then PSHELXOWORLDSX
+print(encrypt("PS. Hello, worlds"))
 # print(decrypt("QLGRQTVZIBTYQZ"))
 
-
-print(ord('A'))
-print(ord('Z'))
