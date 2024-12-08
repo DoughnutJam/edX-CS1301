@@ -35,6 +35,35 @@
 
 #Add your code here!
 
+def check_plagiarism(file1, file2):
+    def get_word_sequences(text, length):
+        """
+        Given a string `text`, return a set of word sequences of the given `length`.
+        """
+        words = text.split()
+        return {" ".join(words[i:i+length]) for i in range(len(words) - length + 1)}
+
+    # Read the contents of both files
+    with open(file1, 'r') as f1, open(file2, 'r') as f2:
+        text1 = f1.read()
+        text2 = f2.read()
+
+    # Check sequences of decreasing lengths starting from 5
+    max_length = min(len(text1.split()), len(text2.split()))
+    longest_match = ""
+
+    for length in range(5, max_length + 1):
+        sequences1 = get_word_sequences(text1, length)
+        sequences2 = get_word_sequences(text2, length)
+
+        # Find common sequences
+        common_sequences = sequences1.intersection(sequences2)
+
+        if common_sequences:
+            # Update the longest match if a common sequence is found
+            longest_match = max(common_sequences, key=lambda x: len(x.split()))
+
+    return longest_match if longest_match else False
 
 #Below are some lines of code that will test your function.
 #You can change the value of the variable(s) to test your
